@@ -2,6 +2,7 @@ import { NextAuthOptions, DefaultSession } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "./db";
 import GoogleProvider from 'next-auth/providers/google';
+import { getServerSession } from "next-auth/next"; // Adjust import based on NextAuth version
 
 declare module 'next-auth' {
   interface Session extends DefaultSession {
@@ -44,15 +45,16 @@ export const authOptions: NextAuthOptions = {
     },
   },
   
-     
-    // You can add other providers like Google, GitHub here if needed
-  
   secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
-  providers:[
+  providers: [
     GoogleProvider({
-        clientId.process.env.GOOGLE_CLIENT_ID as string,
-        clientSecret:process.env.GOOGLE_CLIENT_SECRETE as string
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string // Fixed the typo
     })
   ]
+};
+
+export const getAuthSession = async () => {
+  return await getServerSession(authOptions); // Ensure to use `await` for async function
 };
