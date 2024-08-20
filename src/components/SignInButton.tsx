@@ -9,13 +9,13 @@ type Props = {
 
 const SignInButton = ({text}: Props) => {
   return (
-    <button onClick={
+    <Button onClick={
         ()=>{
             signIn('google').catch(console.error)
         }
     }>
         {text}
-    </button>
+    </Button>
   )
 }
 
