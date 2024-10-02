@@ -1,32 +1,32 @@
-import {getAuthSession} from "@/lib/nextauth"
+// components/UserAccountNav.tsx
+"use client";  // Ensure this is a Client Component
+
+import MyDropdown from './MyDropdown';
+import { User } from "next-auth"; // Adjust based on your setup
 import React from 'react';
-import Link from 'next/link';
-import SignInButton from "./SignInButton";
-import UserAccountNav from './UserAccountNav';
 
 type Props = {
-  session: any; // Define a more specific type if possible
-};
+    user: User; // Using the full User type from NextAuth, which includes optional fields
+}
 
-const Navbar = async(props: Props) => {
-      const session=await getAuthSession()
-      console.log(session?.user);
+const UserAccountNav: React.FC<Props> = ({ user }) => {
+    const handleProfile = () => {
+        // Logic for navigating to the profile page
+        console.log("Navigating to Profile");
+    };
+
+    const handleLogout = () => {
+        // Logic for logging out the user
+        console.log("Logging out");
+    };
 
     return (
-        <div className="fixed inset-x-0 top-0 bg-white dark:bg-gray-950 z-10 h-fit border-b border-zinc-300 py-2">
-            <div className="flex items-center justify-between h-full gap-2 px-8 mx-auto max-w-7xl">
-                <Link href='/' className="flex items-center gap-2">
-                    <p className="rounded-lg border-2 border-b-4 border-r-4 border-black px-2 py-1 text-xl font-bold transition-transform hover:-translate-y-1 md:block dark:border-white">
-                        Quiz-master
-                    </p>
-                </Link>
-
-                <div className="flex items-center">
-                   <SignInButton text="Sign In"/>
-                </div>
-            </div>
-        </div>
+        <MyDropdown 
+            user={user}  // Pass the full user object to MyDropdown
+            onProfile={handleProfile} 
+            onLogout={handleLogout} 
+        />
     );
-};
+}
 
-export default Navbar;
+export default UserAccountNav;
